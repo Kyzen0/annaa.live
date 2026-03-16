@@ -5,74 +5,104 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>annaa.live</title>
-
     <style>
-        * {
+        body,
+        html {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', sans-serif;
-        }
-
-        body {
-            height: 100vh;
-            background: radial-gradient(circle at top, #0a0a0a, #000);
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            height: 100%;
             overflow: hidden;
+            /* Beautiful deep night sky gradient */
+            background: linear-gradient(to bottom, #020111 10%, #20124d 50%, #000022 90%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        .container {
+        .content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             text-align: center;
-            animation: float 4s ease-in-out infinite;
+            z-index: 10;
         }
 
         h1 {
-            font-size: 5.5rem;
-            font-weight: 700;
-            background: linear-gradient(90deg,
-                    #ff0057,
-                    #00f7ff,
-                    #9d00ff,
-                    #00ff85);
-            background-size: 300%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: gradient 5s linear infinite;
-            filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.15));
+            font-size: 4.5rem;
+            color: #ffffff;
+            font-weight: 300;
+            letter-spacing: 6px;
+            margin: 0;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
         }
 
-        .popup {
-            margin-top: 15px;
-            font-size: 0.9rem;
-            color: #aaa;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            opacity: 0;
-            transition: opacity 0.6s ease;
+        p {
+            color: #b3c2e6;
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            margin-top: 1rem;
+            font-weight: 300;
+            text-transform: lowercase;
+            text-shadow: 0 0 10px rgba(179, 194, 230, 0.3);
         }
 
-        @keyframes gradient {
-            0% {
-                background-position: 0%;
-            }
-
-            100% {
-                background-position: 300%;
-            }
+        /* Static/Twinkling Background Stars */
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle infinite ease-in-out;
         }
 
-        @keyframes float {
+        @keyframes twinkle {
 
             0%,
             100% {
-                transform: translateY(0);
+                opacity: 0.2;
+                transform: scale(0.8);
             }
 
             50% {
-                transform: translateY(-10px);
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+
+        /* Shooting Star Trail */
+        .shooting-star {
+            position: absolute;
+            width: 150px;
+            height: 2px;
+            /* Solid white head fading into a transparent tail */
+            background: linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+            transform: rotate(-45deg);
+            opacity: 0;
+            animation: shoot 1.2s ease-out forwards;
+        }
+
+        /* The glowing head of the shooting star */
+        .shooting-star::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 5px;
+            height: 5px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 15px 3px #fff;
+        }
+
+        @keyframes shoot {
+            0% {
+                transform: rotate(-45deg) translateX(0);
+                opacity: 1;
+            }
+
+            100% {
+                /* Moves it diagonally across the screen */
+                transform: rotate(-45deg) translateX(-1200px);
+                opacity: 0;
             }
         }
 
@@ -81,43 +111,76 @@
                 font-size: 3rem;
             }
 
-            .popup {
-                font-size: 0.7rem;
-                letter-spacing: 1.5px;
+            p {
+                font-size: 1rem;
             }
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
+
+    <div class="content">
         <h1>annaa.live</h1>
-        <div class="popup" id="status">something is cooking</div>
+        <p>a quiet space for asna</p>
     </div>
 
     <script>
-        const texts = [
-            "something is cooking",
-            "stay tuned",
-            "building something that won't even believe",
-            "coming soon"
-        ];
+        // 1. Create the twinkling background stars
+        function createStars() {
+            const numStars = 150;
+            for (let i = 0; i < numStars; i++) {
+                let star = document.createElement("div");
+                star.className = "star";
 
-        let index = 0;
-        const el = document.getElementById("status");
+                // Randomly place them across the screen
+                star.style.top = Math.random() * 100 + "%";
+                star.style.left = Math.random() * 100 + "%";
 
-        function changeText() {
-            el.style.opacity = 0;
+                // Randomize their sizes slightly
+                let size = Math.random() * 2.5;
+                star.style.width = size + "px";
+                star.style.height = size + "px";
 
-            setTimeout(() => {
-                el.textContent = texts[index];
-                el.style.opacity = 1;
-                index = (index + 1) % texts.length;
-            }, 600);
+                // Randomize how fast they twinkle
+                star.style.animationDuration = (Math.random() * 3 + 2) + "s";
+                star.style.animationDelay = (Math.random() * 2) + "s";
+
+                document.body.appendChild(star);
+            }
         }
 
-        changeText();
-        setInterval(changeText, 3000);
+        // 2. Create the shooting stars
+        function createShootingStar() {
+            let star = document.createElement("div");
+            star.className = "shooting-star";
+
+            // Start them randomly from the top-right or middle-right area
+            star.style.top = (Math.random() * 50) + "%";
+            star.style.left = (Math.random() * 50 + 50) + "%";
+
+            document.body.appendChild(star);
+
+            // Clean up the star from the HTML after its animation finishes
+            setTimeout(() => {
+                star.remove();
+            }, 1200);
+        }
+
+        // Initialize the night sky
+        createStars();
+
+        // Spawn a new shooting star at random time intervals
+        function loopShootingStars() {
+            // Random delay between 2 to 6 seconds
+            let randomDelay = Math.random() * 4000 + 2000;
+            setTimeout(() => {
+                createShootingStar();
+                loopShootingStars();
+            }, randomDelay);
+        }
+
+        loopShootingStars();
     </script>
 </body>
 
