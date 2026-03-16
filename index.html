@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>zyne.dev</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            background: radial-gradient(circle at top, #0a0a0a, #000);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        h1 {
+            font-size: 5.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg,
+                    #ff0057,
+                    #00f7ff,
+                    #9d00ff,
+                    #00ff85);
+            background-size: 300%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient 5s linear infinite;
+            filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.15));
+        }
+
+        .popup {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #aaa;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0%;
+            }
+
+            100% {
+                background-position: 300%;
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 3rem;
+            }
+
+            .popup {
+                font-size: 0.7rem;
+                letter-spacing: 1.5px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>annaa.live</h1>
+        <div class="popup" id="status">something is cooking</div>
+    </div>
+
+    <script>
+        const texts = [
+            "something is cooking",
+            "stay tuned",
+            "building something that won't even believe",
+            "coming soon"
+        ];
+
+        let index = 0;
+        const el = document.getElementById("status");
+
+        function changeText() {
+            el.style.opacity = 0;
+
+            setTimeout(() => {
+                el.textContent = texts[index];
+                el.style.opacity = 1;
+                index = (index + 1) % texts.length;
+            }, 600);
+        }
+
+        changeText();
+        setInterval(changeText, 3000);
+    </script>
+</body>
+
+</html>
